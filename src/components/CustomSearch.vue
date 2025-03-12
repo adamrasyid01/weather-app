@@ -9,7 +9,7 @@ const props = defineProps({
   },
   placeHolder: {
     type: String,
-    default: 'Search...'
+    default: 'Enter City Name'
   }
 })
 
