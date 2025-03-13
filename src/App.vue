@@ -1,14 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import CustomSearch from './components/CustomSearch.vue';
 import bgImage from './assets/rainy.jpg';
 import WeatherPage from './components/WeatherPage.vue';
 
-const searchQuery = ref();
 
-const tes = (query: string) => {
-  console.log("Search query:", query);
-};
 </script>
 
 <template>
@@ -18,9 +12,8 @@ const tes = (query: string) => {
 
 
     <!-- Main Container -->
-    <div class="relative border-8 border-gray-300  bg-cover bg-center backdrop-blur-lg shadow-lg rounded-2xl w-[90%] max-w-4xl p-6 text-white"
+    <div class="relative border-8 border-gray-300  bg-cover bg-center backdrop-blur-lg shadow-lg rounded-2xl w-[90%] max-w-4xl text-white"
       :style="{ backgroundImage: `url(${bgImage})` }">
-     
       <WeatherPage /> 
     </div>
   </div>
