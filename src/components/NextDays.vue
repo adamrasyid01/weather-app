@@ -7,7 +7,6 @@ const selectedCountry = ref("us");
 
 <template>
     <div>
-
         <CustomLocationSelect v-model="selectedCountry" :options="[
             { value: 'us', label: 'United States' },
             { value: 'id', label: 'Indonesia' }

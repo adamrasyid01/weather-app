@@ -1,7 +1,32 @@
 <script lang="ts" setup>
-import Background from '../assets/rainy.jpg';
+
+import { onMounted, ref } from 'vue';
 import Forecast from '../components/Forecast.vue';
 import NextDays from '../components/NextDays.vue';
+import { useCurrentWeatherStore } from '../stores/currentWeather';
+
+const currentWeatherStore = useCurrentWeatherStore();
+
+const currentWeatherResponse = ref();
+
+const fetchCurrentWeather = async () => {
+    try{
+        const response = await currentWeatherStore.getCurrentWeather();
+        if(response){
+            currentWeatherResponse.value = response;
+            console.log(response.current.condition)
+
+        }else{
+                console.error("Error Cak")
+        }
+    }catch(err){
+        console.error("Gagal")
+    }
+} 
+onMounted(() => {
+    fetchCurrentWeather();
+    // console.log()
+})
 </script>
 
 <template>
@@ -20,7 +45,7 @@ import NextDays from '../components/NextDays.vue';
                         <Forecast />
                         <Forecast />
                         <Forecast />
-                        <Forecast />
+                        <!-- <Forecast /> -->
                     </div>
                 </div>
 
