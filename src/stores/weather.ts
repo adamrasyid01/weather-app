@@ -1,12 +1,12 @@
 import { defineStore } from "pinia";
-import { apiBaseGet } from "../utils/apiHandler";
+import { apiBaseWeather } from "../utils/apiHandler";
 
 interface CurrentWeatherParams{
     q?:string;
     aqi?:boolean;
 }
 
-export const useCurrentWeatherStore = defineStore("currentWeather", {
+export const useWeatherStore = defineStore("currentWeather", {
   state: () => ({
   }),
   getters: {},
@@ -14,7 +14,7 @@ export const useCurrentWeatherStore = defineStore("currentWeather", {
     getCurrentWeather(params:CurrentWeatherParams = {}, payload = {}) {
       const { q = "Surabaya", aqi = false } = params;
       const url = `/current.json?key=${import.meta.env.VITE_KEY}&q=${q}&aqi=${aqi}`;
-      return apiBaseGet(url, payload);
+      return apiBaseWeather(url, payload);
   
     },
   },

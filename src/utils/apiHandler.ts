@@ -1,9 +1,9 @@
-import { baseInstance } from "./api";
+import { baseWeatherInstance, baseAreaInstance } from "./api";
 
-export const apiBaseGet = async (url: string, data:  object) => {
+export const apiBaseWeather = async (url: string, data:  object) => {
      // ✅ GET Request
      try {
-        let response = await baseInstance.get(url, data);
+        let response = await baseWeatherInstance.get(url, data);
         return response.data
      } catch (error) {
         console.error("GET Error:", error);
@@ -11,3 +11,12 @@ export const apiBaseGet = async (url: string, data:  object) => {
      }
 }
    
+export const apiBaseArea = async (url:string, data: object) => {
+   try{
+      let response = await baseAreaInstance.get(url,data);
+      return response.data
+   }catch (error){
+      console.error("GET Error : ", error)
+      throw error;
+   }
+}

@@ -1,11 +1,21 @@
 import axios from "axios";
 
-export const baseInstance = axios.create({
+export const baseWeatherInstance = axios.create({
     headers: {
       common: {
         Accept: "text/plain, */*",
       },
     },
-    baseURL: import.meta.env.VITE_BASE_URL,
+    baseURL: import.meta.env.VITE_WEATHER_URL,
   });
   
+
+
+export const baseAreaInstance = axios.create({
+  headers:{
+    common:{
+      Accept: "text/plain, */*"
+    }
+  },
+  baseURL: import.meta.env.VITE_AREA_URL
+})
