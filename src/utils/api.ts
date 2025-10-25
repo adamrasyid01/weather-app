@@ -13,3 +13,15 @@ export const baseKabupatenInstance = axios.create({
     Accept: "application/json",
   },
 });
+export const baseKecamatanInstance = axios.create({
+  baseURL: "/api-proxy/api",
+  headers: {
+    Accept: "application/json",
+  },
+});
+export const baseKelurahanInstance = axios.create({
+  baseURL: "/api-proxy/api",
+  headers: {
+    Accept: "application/json",
+  },
+});

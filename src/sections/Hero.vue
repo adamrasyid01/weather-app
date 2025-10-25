@@ -1,8 +1,134 @@
 <script lang="ts" setup>
+import { computed, onMounted, ref, watch } from 'vue';
 import BaseSelect from '../components/BaseSelect.vue';
+import { useRegionStore } from '../stores/region';
 import TimeDate from './TimeDate.vue';
 
 
+// Ambil Provinsi di Indonesia
+const regionStore = useRegionStore();
+
+// STATE LOKAL
+const provinsiResponse = ref<{ code: string; name: string }[]>([]);
+const kabKotaResponse = ref<{ code: string; name: string }[]>([]);
+const kecamatanResponse = ref<{ code: string; name: string }[]>([]);
+const kelurahanResponse = ref<{ code: string; name: string }[]>([]);
+
+
+const selectedProvinsi = ref<string | null>(null);
+const selectedKabKota = ref<string | null>(null);
+const selectedKecamatan = ref<string | null>(null);
+const selectedKelurahan = ref<string | null>(null);
+
+
+const fetchProvinsi = async () => {
+    try {
+        const response = await regionStore.getProvinsi();
+        if (response) {
+            console.log(response.data)
+            provinsiResponse.value = response.data;
+        } else {
+            console.error("Error Cak")
+        }
+    } catch (err) {
+        console.error(err)
+    }
+}
+
+const fetchKabKota = async (provinsiCode: string) => {
+    try {
+        const response = await regionStore.getKabKota(provinsiCode);
+        if (response) {
+            kabKotaResponse.value = response.data;
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+const fetchKecamatan = async (kabKotaCode: string) => {
+    try {
+        console.log(kabKotaCode);
+        const response = await regionStore.getKecamatan(kabKotaCode);
+        if (response) {
+            kecamatanResponse.value = response.data;
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+const fetchKelurahan = async (kecamatanCode: string) => {
+    try {
+        const response = await regionStore.getKelurahan(kecamatanCode);
+        if (response) kelurahanResponse.value = response.data;
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+const provinsiOptions = computed(() =>
+    provinsiResponse.value.map((item) => ({
+        value: item.code,
+        label: item.name,
+    }))
+);
+
+const kabupatenOptions = computed(() =>
+    kabKotaResponse.value.map((item) => ({
+        value: item.code,
+        label: item.name,
+    }))
+);
+const kecamatanOptions = computed(() =>
+    kecamatanResponse.value.map((item) => ({
+        value: item.code,
+        label: item.name,
+    }))
+);
+
+const kelurahanOptions = computed(() =>
+    kelurahanResponse.value.map((item) => ({
+        value: item.code,
+        label: item.name,
+    }))
+);
+
+// WATCHERS
+watch(selectedProvinsi, (newVal) => {
+    if (newVal) {
+        fetchKabKota(newVal);
+        // Reset bawahnya
+        selectedKabKota.value = null;
+        selectedKecamatan.value = null;
+        selectedKelurahan.value = null;
+        kabKotaResponse.value = [];
+        kecamatanResponse.value = [];
+        kelurahanResponse.value = [];
+    }
+});
+
+watch(selectedKabKota, (newVal) => {
+    if (newVal) {
+        fetchKecamatan(newVal);
+        selectedKecamatan.value = null;
+        selectedKelurahan.value = null;
+        kecamatanResponse.value = [];
+        kelurahanResponse.value = [];
+    }
+});
+
+watch(selectedKecamatan, (newVal) => {
+    if (newVal) {
+        fetchKelurahan(newVal);
+        selectedKelurahan.value = null;
+        kelurahanResponse.value = [];
+    }
+});
+
+
+onMounted(() => {
+    fetchProvinsi()
+})
 </script>
 
 <template>
@@ -16,12 +142,14 @@ import TimeDate from './TimeDate.vue';
                     <p class="text-sm text-slate-300 mt-2">Ramalan cepat dan detail — Pilih Kota lalu catat cuacanya</p>
                 </div>
                 <div class="md:grid grid-cols-4 gap-4 ">
-
-                    <!-- <BaseSelect label="Pilih Provinsi" v-model="selectedProvinsi" :options="provinsiOptions" optionLabel="label" optionValue ="value" prependIcon="" /> -->
-                    <BaseSelect />
-                    <BaseSelect />
-                    <BaseSelect />
-                    <BaseSelect />
+                    <BaseSelect label="Pilih Provinsi" v-model="selectedProvinsi" :options="provinsiOptions"
+                        optionLabel="label" optionValue="value" prependIcon="" />
+                    <BaseSelect label="Pilih Kabupaten/Kota" v-model="selectedKabKota" :options="kabupatenOptions"
+                        optionLabel="label" optionValue="value" :disabled="!selectedProvinsi" />
+                    <BaseSelect label="Pilih Kecamatan" v-model="selectedKecamatan" :options="kecamatanOptions"
+                        optionLabel="label" optionValue="value" :disabled="!selectedKabKota" />
+                    <BaseSelect label="Pilih Kelurahan" v-model="selectedKelurahan" :options="kelurahanOptions"
+                        optionLabel="label" optionValue="value" :disabled="!selectedKecamatan" />
                 </div>
             </div>
         </div>

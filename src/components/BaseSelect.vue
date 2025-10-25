@@ -89,13 +89,20 @@ const emit = defineEmits([
         <Select v-model="value" :options="options" :optionValue="optionValue" :optionLabel="optionLabel"
             :placeholder="placeHolder" :loading="isLoading" class="h-10 rounded-sm text-sm" fluid
             filterPlaceholder="Search" :pt="{
-                listContainer: { class: 'bg-slate-100 border border-gray-600 text-red-400 shadow-lg rounded-md' },
-                option: { class: 'hover:bg-yellow-200 p-2 rounded-sm' },
-                optionLabel: { class: 'text-blue-400' },
-                filterInput: { class: 'bg-[#121212] text-blue-300 border-gray-700' },
-                trigger: { class: 'bg-[#1E1E1E] text-gray-100 border border-gray-600' },
-            }" 
-        />
+                root: { class: 'bg-[#1E1E1E] border border-gray-700 rounded-lg transition-all duration-200' },
+                trigger: { class: 'text-gray-100 rounded-lg hover:bg-[#2A2A2A]' },
+                listContainer: { class: 'bg-[#1E1E1E] border border-gray-700 rounded-lg shadow-xl' },
+                option: ({ context }) => ({
+                    class: [
+                        context.selected
+                            ? 'bg-blue-500 text-[#8AB4F8]' // ✅ Warna saat terpilih
+                            : 'hover:bg-slate-800'
+                    ]
+                }),
+                optionLabel: { class: 'text-gray-200' },
+
+                emptyMessage: { class: 'text-gray-400 italic' }
+            }" />
 
     </div>
 </template>
