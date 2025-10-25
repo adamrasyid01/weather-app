@@ -2,54 +2,52 @@
 
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 import Forecast from '../components/Forecast.vue';
-import { useWeatherStore } from '../stores/weather';
-import CustomLocationSelect from './CustomLocationSelect.vue';
-import { useAreaStore } from '../stores/area';
+import { useRegionStore } from '../stores/region';
 import { getTimeDate } from '../utils/gettimedate';
+import BaseSelect from '../components/BaseSelect.vue';
 
 // Time and Date
 const timeNow = ref();
 let interval: number | undefined;
 
 
-const weatherStore = useWeatherStore();
-const areaStore = useAreaStore();
 
-const currentWeatherResponse = ref();
-const areaResponse = ref<{ id: string; text: string }[]>([]); 
+// Ambil Provinsi di Indonesia
+const provinsiStore = useRegionStore();
+// Ambil Kota di Indonesia
+const kotaKabStore = useRegionStore();
 
-const fetchCurrentWeather = async () => {
+
+const provinsiResponse = ref<{ code: string; name: string }[]>([]); 
+const kotaKabResponse = ref<{id:string; text: string}[]>([]);
+
+
+const selectedProvinsi = ref();
+
+const fetchProvinsi = async () => {
     try {
-        const response = await weatherStore.getCurrentWeather();
+        const response = await provinsiStore.getProvinsi();
         if (response) {
-            currentWeatherResponse.value = response;
-            console.log(response.current.condition)
+            console.log(response.data)
+            provinsiResponse.value = response.data;
         } else {
             console.error("Error Cak")
         }
     } catch (err) {
-        console.error("Gagal")
+        console.error(err)
     }
 }
 
-const fetchKabupaten = async () => {
-    try {
-        const response = await areaStore.getProvince();
-        if (response) {
-            console.log(response)
-            areaResponse.value = response.result;
-            console.log(areaResponse.value)
-        } else {
-            console.error("Error Cak")
-        }
-    } catch (err) {
-        console.error("Gagal")
-    }
-}
+const provinsiOptions = computed(() =>
+  provinsiResponse.value.map((item: any) => ({
+    value: item.code,
+    label: item.name,
+  }))
+);
 
 onMounted(() => {
-    fetchCurrentWeather();
-    fetchKabupaten();
+
+    fetchProvinsi();
 
     const update = () => {
         const { time, date } = getTimeDate(7); 
@@ -64,7 +62,6 @@ onUnmounted(() => {
     if (interval) clearInterval(interval)
 })
 
-const selectedCountry = ref("1");
 </script>
 
 <template>
@@ -82,16 +79,17 @@ const selectedCountry = ref("1");
                         <Forecast />
                         <Forecast />
                         <Forecast />
-                        <!-- <Forecast /> -->
+                        <Forecast />
                     </div>
                 </div>
 
             </div>
         </div>
-        <div class="md:basis-1/3 bg-gray-500/50 flex-col items-center  text-black p-6">
-            <CustomLocationSelect v-model="selectedCountry"
-                :options="(areaResponse || []).map(item => ({ value: item.id, label: item.text }))"
-                placeholder="Choose a country" icon="globe" />
+        <div class="md:basis-1/3 flex-col items-center  text-black p-6">
+            <BaseSelect label="Pilih Provinsi" v-model="selectedProvinsi" :options="provinsiOptions" optionLabel="label" optionValue ="value" prependIcon=""/>
+            <BaseSelect label="Pilih Kabupaten"/>
+            <BaseSelect label="Pilih Kecamatan"/>
+            <BaseSelect label="Pilih Kelurahan"/>
         </div>
     </div>
 </template>

@@ -1,21 +1,15 @@
+// src/utils/api.ts
 import axios from "axios";
 
-export const baseWeatherInstance = axios.create({
-    headers: {
-      common: {
-        Accept: "text/plain, */*",
-      },
-    },
-    baseURL: import.meta.env.VITE_WEATHER_URL,
-  });
-  
-
-
-export const baseAreaInstance = axios.create({
-  headers:{
-    common:{
-      Accept: "text/plain, */*"
-    }
+export const baseProvinsiInstance = axios.create({
+  baseURL: "/api-proxy/api",
+  headers: {
+    Accept: "application/json",
   },
-  baseURL: import.meta.env.VITE_AREA_URL
-})
+});
+export const baseKabupatenInstance = axios.create({
+  baseURL: "/api-proxy/api",
+  headers: {
+    Accept: "application/json",
+  },
+});
