@@ -10,6 +10,7 @@ import TipsCuaca from './sections/TipsCuaca.vue';
     <div class="shadow-lg rounded-2xl max-w-4xl w-full mx-auto text-white 
          border-0 md:border md:border-white/5">
       <Hero />
+      
       <MainForecast />
       <TipsCuaca />
     </div>

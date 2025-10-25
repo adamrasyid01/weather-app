@@ -3,10 +3,14 @@ import { computed, onMounted, ref, watch } from 'vue';
 import BaseSelect from '../components/BaseSelect.vue';
 import { useRegionStore } from '../stores/region';
 import TimeDate from './TimeDate.vue';
+import { useForecastStore } from '../stores/forecast';
+import Footer from './Footer.vue';
+
 
 
 // Ambil Provinsi di Indonesia
 const regionStore = useRegionStore();
+const forecastStore = useForecastStore();
 
 // STATE LOKAL
 const provinsiResponse = ref<{ code: string; name: string }[]>([]);
@@ -65,6 +69,15 @@ const fetchKelurahan = async (kecamatanCode: string) => {
         console.error(err);
     }
 };
+
+const fetchForecast = async(kelurahanCode: string) => {
+    try {
+      const response = await forecastStore.getWeather(kelurahanCode); // panggil API cuaca
+      console.log("🌤️ Data cuaca:", response.data);
+    } catch (err) {
+      console.error("Gagal ambil data cuaca:", err);
+    }
+}
 
 const provinsiOptions = computed(() =>
     provinsiResponse.value.map((item) => ({
@@ -125,6 +138,13 @@ watch(selectedKecamatan, (newVal) => {
     }
 });
 
+watch(selectedKelurahan, async (newVal) => {
+  if (newVal) {
+    console.log("📍 Kelurahan terpilih:", newVal);
+    fetchForecast(newVal);
+  }
+});
+
 
 onMounted(() => {
     fetchProvinsi()
@@ -132,9 +152,9 @@ onMounted(() => {
 </script>
 
 <template>
-
     <TimeDate />
-    <div class="max-w-4xl w-full px-6 ">
+    <Footer/>
+    <div class="max-w-4xl w-full px-6 py-3">
         <div class="rounded-2xl p-2">
             <div class="flex flex-col  gap-4">
                 <div>

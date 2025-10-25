@@ -1,10 +1,9 @@
-import { baseKabupatenInstance, baseKecamatanInstance, baseKelurahanInstance, baseProvinsiInstance} from "./api";
-
+import { baseForecastInstance, baseRegionInstance} from "./api";
 
 
 export const apiBaseProvinsi = async (url: string, params: object = {}) => {
   try {
-    const response = await baseProvinsiInstance.get(url, { params });
+    const response = await baseRegionInstance.get(url, { params });
     return response.data;
   } catch (error) {
     console.error("GET Error:", error);
@@ -13,7 +12,7 @@ export const apiBaseProvinsi = async (url: string, params: object = {}) => {
 };
 export const apiBaseKabupaten = async (url: string, params: object = {}) => {
   try {
-    const response = await baseKabupatenInstance.get(url, { params });
+    const response = await baseRegionInstance.get(url, { params });
     return response.data;
   } catch (error) {
     console.error("GET Error:", error);
@@ -22,7 +21,7 @@ export const apiBaseKabupaten = async (url: string, params: object = {}) => {
 };
 export const apiBaseKecamatan = async (url: string, params: object = {}) => {
   try {
-    const response = await baseKecamatanInstance.get(url, { params });
+    const response = await baseRegionInstance.get(url, { params });
     return response.data;
   } catch (error) {
     console.error("GET Error:", error);
@@ -31,7 +30,18 @@ export const apiBaseKecamatan = async (url: string, params: object = {}) => {
 };
 export const apiBaseKelurahan = async (url: string, params: object = {}) => {
   try {
-    const response = await baseKelurahanInstance.get(url, { params });
+    const response = await baseRegionInstance.get(url, { params });
+    return response.data;
+  } catch (error) {
+    console.error("GET Error:", error);
+    throw error;
+  }
+};
+
+// CUACA
+export const apiBaseForecast = async (url: string, params: object = {}) => {
+  try {
+    const response = await baseForecastInstance.get(url, { params });
     return response.data;
   } catch (error) {
     console.error("GET Error:", error);

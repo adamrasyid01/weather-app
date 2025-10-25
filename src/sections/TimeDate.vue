@@ -19,6 +19,7 @@ onMounted(() => {
       second: '2-digit',
     })
 
+
     date.value = now.toLocaleDateString('id-ID', {
       weekday: 'long',
       day: 'numeric',
@@ -38,7 +39,7 @@ onUnmounted(() => {
 
 <template>
   <div
-    class="flex flex-col items-center justify-center min-h-[200px] text-slate-100 transition-all duration-500 ease-in-out"
+    class="flex flex-col items-center justify-center px-8 py-2  text-slate-100 transition-all duration-500 ease-in-out"
   >
     <!-- Jam -->
     <h1 class="text-6xl font-bold tracking-wide drop-shadow-lg animate-pulse">

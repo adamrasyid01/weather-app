@@ -3,7 +3,7 @@
 
 <template>
 
-    <footer class=" text-center text-xs text-slate-400 pb-8">
-        Template — Tailwind • Gaya responsif • Gambar: Unsplash
+    <footer class=" text-center text-sm text-slate-400 ">
+        Made with API https://wilayah.id/ dan https://data.bmkg.go.id/prakiraan-cuaca/
     </footer>
 </template>
