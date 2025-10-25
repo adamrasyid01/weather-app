@@ -82,7 +82,7 @@ const emit = defineEmits([
 
 
 <template>
-    <div class="">
+    <div class="py-2">
         <label v-if="showLabel" class="block font-semibold mb-[5px] text-normal">
             {{ label }}<span v-if="required" class="text-danger-300">*</span>
         </label>

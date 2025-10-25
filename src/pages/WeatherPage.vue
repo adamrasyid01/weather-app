@@ -3,7 +3,6 @@
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 import Forecast from '../components/Forecast.vue';
 import { useRegionStore } from '../stores/region';
-import { getTimeDate } from '../utils/gettimedate';
 import BaseSelect from '../components/BaseSelect.vue';
 
 // Time and Date
