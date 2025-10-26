@@ -4,9 +4,9 @@ import BaseSelect from '../components/BaseSelect.vue';
 import { useRegionStore } from '../stores/region';
 import TimeDate from './TimeDate.vue';
 import { useForecastStore } from '../stores/forecast';
-import Footer from './Footer.vue';
+import Credit from './Credit.vue';
 
-
+const emit = defineEmits(['update:selectedKelurahan'])
 
 // Ambil Provinsi di Indonesia
 const regionStore = useRegionStore();
@@ -29,7 +29,7 @@ const fetchProvinsi = async () => {
     try {
         const response = await regionStore.getProvinsi();
         if (response) {
-            console.log(response.data)
+            // console.log(response.data)
             provinsiResponse.value = response.data;
         } else {
             console.error("Error Cak")
@@ -70,14 +70,7 @@ const fetchKelurahan = async (kecamatanCode: string) => {
     }
 };
 
-const fetchForecast = async(kelurahanCode: string) => {
-    try {
-      const response = await forecastStore.getWeather(kelurahanCode); // panggil API cuaca
-      console.log("🌤️ Data cuaca:", response.data);
-    } catch (err) {
-      console.error("Gagal ambil data cuaca:", err);
-    }
-}
+
 
 const provinsiOptions = computed(() =>
     provinsiResponse.value.map((item) => ({
@@ -140,10 +133,12 @@ watch(selectedKecamatan, (newVal) => {
 
 watch(selectedKelurahan, async (newVal) => {
   if (newVal) {
-    console.log("📍 Kelurahan terpilih:", newVal);
-    fetchForecast(newVal);
+    // console.log("📍 Kelurahan terpilih:", newVal);
+    emit('update:selectedKelurahan', newVal); // kirim ke App.vue
+    // fetchForecast(newVal);
   }
 });
+
 
 
 onMounted(() => {
@@ -153,7 +148,7 @@ onMounted(() => {
 
 <template>
     <TimeDate />
-    <Footer/>
+    <Credit/>
     <div class="max-w-4xl w-full px-6 py-3">
         <div class="rounded-2xl p-2">
             <div class="flex flex-col  gap-4">
